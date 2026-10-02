@@ -1,0 +1,25 @@
+services:
+  nginx:
+    build: .
+    container_name: learning-nginx
+    ports:
+      - "80:80"
+    depends_on: 
+      - nodejs
+      - fastapi  
+
+  nodejs:
+    image: manister7/learning-node:4
+    container_name: learning-node
+    expose:
+      - "3000"
+  
+  fastapi:
+    image: manister7/learning-fastapi:6
+    container_name: learning-fastapi
+    environment:
+      DATABASE_URL: postgresql+psycopg://learning_user:learning_password@host.docker.internal:5432/learning_db
+    expose:
+      - "8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
